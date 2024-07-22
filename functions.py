@@ -1,3 +1,5 @@
+import re
+
 import pygame
 from constants import *
 import tkinter.messagebox
@@ -30,7 +32,7 @@ def highlighted_piece_rect_pos(mouse_x, mouse_y, pieces):
     for piece, rect in rect_list.items():
         if rect.collidepoint(mouse_x, mouse_y):
             x, y = piece.get_px_position_base_board()
-            print(f'x, y:{x}, {y}')
+            # print(f'x, y:{x}, {y}')
             return (x, y), piece
     return None, None
 
@@ -91,13 +93,24 @@ def is_dot_clicked(game, highlight_piece, mouse_x, mouse_y):
         # meantime, draw a pygame.Rect on the board to make easier for later detection.
         # rect = pygame.Rect(dot_px_position_base_window(pos[0], pos[1]), PIECE_SIZE)
 
-        print(f"dot_px_position_base_window(pos[0], pos[1]) :{dot_px_position_base_window(pos[0], pos[1])}")
-        print(f'mouse_position                              :{mouse_x, mouse_y}')
+        # print(f"dot_px_position_base_window(pos[0], pos[1]) :{dot_px_position_base_window(pos[0], pos[1])}")
+        # print(f'mouse_position                              :{mouse_x, mouse_y}')
 
         if (0 <= abs(dot_px_position_base_window(pos[0], pos[1])[0] - mouse_x) <= DOT_RADIUS*2
                 and 0 <= abs(dot_px_position_base_window(pos[0], pos[1])[1] - mouse_y) <= DOT_RADIUS*2):
             return pos
     return None
+
+
+def is_piece_at_self_board(piece):
+    red_board = [[x, y] for x in range(0, 9) for y in range(0, 5)]
+    black_board = [[x, y] for x in range(0, 9) for y in range(5, 10)]
+    if piece.get_color() == TEAM_BLACK and piece.get_position() in black_board:
+        return True
+    elif piece.get_color() == TEAM_RED and piece.get_position() in red_board:
+        return True
+    else:
+        return False
 
 
 def get_other_color(color):
@@ -125,3 +138,31 @@ def popup_window_showinfo(title, message):
 def game_over(color):
     """return True if player clicked yes, otherwise False"""
     return popup_window_askokcancel("GAME OVER", f"Team {color} win the game, want another?")
+
+
+def get_piece_at_position(board_pieces_position, position):
+    """get the piece at location
+    return None if no piece there
+    :param board_pieces_position:
+    :param position: position in board i.e [0, 0] return Chariot object
+    """
+    if position is None:
+        return None
+    if 0 <= position[0] < 9 and 0 <= position[1] < 10:
+        return board_pieces_position[position[0], position[1]]
+    else:
+        # raise IndexError('Position out of range')
+        return None
+
+
+def extract_class_name(class_string):
+    """Extract the class name from a string representation of a class."""
+    # Define a regex pattern to match the class name within the string
+    pattern = r"<class 'Piece\.([A-Za-z_][A-Za-z0-9_]*)'>"
+    # Search for the pattern in the provided string
+    match = re.search(pattern, class_string)
+    # If a match is found, return the captured group (class name)
+    if match:
+        return match.group(1)
+    else:
+        return None
