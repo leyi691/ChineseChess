@@ -127,7 +127,7 @@ def main():
                 cchess.set_turn(get_other_color(AI_TEAM_COLOR))
                 text_game_round += 1
                 class_name = extract_class_name(str(type(piece)))
-                text_ai_move = f"AI move: {class_name} from {piece.get_position()} to {_to}"
+                text_ai_move = f"AI move: {class_name} from {_from} to {_to}"
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
