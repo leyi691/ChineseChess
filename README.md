@@ -1,0 +1,2 @@
+#Introduction
+This report provides a comprehensive analysis of the development and implementation of an inter-active Chinese Chess game, focusing on key aspects such as gameplay mechanics, search algorithms, move validation, and challenges encountered during the development process. The project aimed to create an engaging and intelligent Chinese Chess game where a human player competes against a computer AI. The AI employs the Minimax algorithm with Alpha-Beta pruning to make strategic decisions, while the game interface ensures an immersive and user-friendly experience.
