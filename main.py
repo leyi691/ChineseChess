@@ -1,6 +1,5 @@
 # main
 import time
-
 from ChineseChess import *
 from functions import *
 from aiplay import *
